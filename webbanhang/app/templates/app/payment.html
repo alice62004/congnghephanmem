@@ -1,0 +1,164 @@
+{% extends 'app/base.html' %} {% block content_checkout %} {% load static %}
+
+<div class="row" style="width: 100%">
+  <div class="col-lg-6">
+    <div class="box-element">
+      <h3>Thông tin đơn hàng</h3>
+      <hr />
+
+      <table class="table">
+        <tr>
+          <td><strong>Họ tên:</strong></td>
+          <td>{{ name }}</td>
+        </tr>
+        <tr>
+          <td><strong>Email:</strong></td>
+          <td>{{ email }}</td>
+        </tr>
+        <tr>
+          <td><strong>Địa chỉ:</strong></td>
+          <td>{{ address }}</td>
+        </tr>
+        <tr>
+          <td><strong>Thành phố:</strong></td>
+          <td>{{ city }}</td>
+        </tr>
+        <tr>
+          <td><strong>Tổng cộng:</strong></td>
+          <td>{{ total_amount|floatformat:2 }} VND</td>
+        </tr>
+        <tr>
+          <td><strong>Trạng thái thanh toán:</strong></td>
+          <td>{{ payment_status }}</td>
+          <!-- Hiển thị trạng thái thanh toán -->
+        </tr>
+      </table>
+
+      <hr />
+      
+      <hr />
+      <h3>Tuỳ chọn thanh toán</h3>
+
+      <!-- Form thanh toán -->
+      <form method="POST" action="{% url 'checkout_payment' %}">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="{{ order.id }}" />
+        <!-- Trường ẩn chứa order ID -->
+        <div class="form-check">
+          <input
+            type="radio"
+            name="payment_method"
+            value="cash"
+            class="form-check-input"
+            id="cash"
+          />
+          <label class="form-check-label" for="cash"
+            >Thanh toán tiền mặt khi nhận hàng</label
+          >
+        </div>
+        <div class="form-check">
+          <input
+            type="radio"
+            name="payment_method"
+            value="transfer"
+            class="form-check-input"
+            id="transfer"
+          />
+          <label class="form-check-label" for="transfer"
+            >Thanh toán chuyển khoản ngân hàng</label
+          >
+        </div>
+        <div class="form-check">
+          <input
+            type="radio"
+            name="payment_method"
+            value="paypal"
+            class="form-check-input"
+            id="paypal"
+          />
+          <label class="form-check-label" for="paypal"
+            >Thanh toán qua Paypal</label
+          >
+        </div>
+      </form>
+
+      <!-- Nút Giao hàng -->
+      <div style="margin-top: 20px">
+        <button
+          class="btn btn-primary"
+          id="generate-invoice"
+          style="width: 100%"
+        >
+          Xuất hoá đơn
+        </button>
+      </div>
+
+      <!-- Hiển thị hóa đơn -->
+      <div
+        id="invoice-section"
+        style="
+          display: none;
+          margin-top: 20px;
+          border: 1px solid #ccc;
+          padding: 15px;
+          text-align: left;
+        "
+      >
+        <h4>Hóa đơn</h4>
+        <p><strong>Họ tên:</strong> {{ name }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Địa chỉ:</strong> {{ address }}</p>
+        <p><strong>Thành phố:</strong> {{ city }}</p>
+        <p><strong>Tổng cộng:</strong> {{ total_amount|floatformat:2 }} VND</p>
+        <p>
+          <strong>Ngày xuất hoá đơn:</strong> <span id="invoice-date"></span>
+        </p>
+        <hr />
+        <p>Cảm ơn bạn đã mua hàng!</p>
+        <div style="margin-top: 20px">
+          <button
+            class="btn btn-primary"
+            id="process-payment"
+            style="width: 100%"
+          >
+            Thanh toán
+          </button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Lắng nghe sự kiện click vào nút "Xuất hóa đơn"
+  document
+    .getElementById("generate-invoice")
+    .addEventListener("click", function () {
+      // Hiển thị hóa đơn
+      const invoiceSection = document.getElementById("invoice-section");
+      invoiceSection.style.display = "block";
+
+      // Lấy thời gian thực
+      const now = new Date();
+      const dateString = now.toLocaleDateString("vi-VN", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      const timeString = now.toLocaleTimeString("vi-VN");
+      document.getElementById(
+        "invoice-date"
+      ).textContent = `${dateString} - ${timeString}`;
+    });
+
+  //  click vào nút "Thanh toán" trong phần hóa đơn
+  document
+    .querySelector("#invoice-section .btn-primary")
+    .addEventListener("click", function () {
+      alert("Cảm ơn bạn đã hoàn tất thanh toán! Chúng tôi sẽ xử lý đơn hàng của bạn sớm nhất có thể.");
+    });
+</script>
+
+
+{% endblock %}

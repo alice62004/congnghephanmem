@@ -1,0 +1,63 @@
+{% extends 'app/base.html' %} <!-- Kế thừa template base.html -->
+{% load static %} <!-- Tải file tĩnh -->
+
+{% block banner_slider %}
+<div id="carouselExampleDark" class="carousel carousel-dark slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+   
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="10000">
+      <img src="https://theme.hstatic.net/200000117693/1001219415/14/slide_1_img.jpg?v=1868" class="d-block w-100" alt="..." style="height: 480px;">
+    </div>
+    <div class="carousel-item" data-bs-interval="2000">
+      <img src="https://theme.hstatic.net/200000117693/1001219415/14/slide_4_img.jpg?v=1868" class="d-block w-100" alt="..." style="height: 480px;">
+    </div>
+   
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{% endblock banner_slider %}
+
+<!-- Hiển thị danh mục -->
+{% block category_list %}
+<div class="categories">
+    <h4>Danh mục</h4>
+    <ul>
+        {% for category in categorys %}
+            <li>{{ category.name }}</li> <!-- Giả sử mỗi Category có trường 'name' -->
+        {% endfor %}
+    </ul>
+</div>
+{% endblock category_list %}
+
+<!-- Hiển thị sản phẩm lên trang chủ -->
+{% block main_content %}
+{% if user.is_authenticated %}
+  <div class="row" style="width: 100%;">
+    {% for product in products %}
+      <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
+        <img class="thumbnail img-fluid" src="{{ product.ImageURL }}" alt="{{ product.name }}">
+        <div class="box-element product">
+          <h6><strong>{{ product.name }}</strong></h6>
+          <hr>
+          <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Thêm Vào Giỏ Hàng</button>
+          <a class="btn btn-outline-success" href="{% url 'detail' %}?id={{ product.id }}">Xem</a>
+          <h3 style="float: right;"><strong>{{ product.price | floatformat:0 }}đ</strong></h3>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>Vui lòng đăng nhập để xem sản phẩm.</p>
+{% endif %}
+{% endblock %}

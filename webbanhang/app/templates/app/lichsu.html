@@ -1,0 +1,19 @@
+{% extends 'app/base.html' %} {% load static %} {% load humanize %}
+
+{% block content_checkout %}
+  {% csrf_token %}
+  <div class="row" style="width: 100%">
+    <div class="col-lg-6">
+      <div class="box-element" id="form-wrapper">
+        <h3>Lịch sử giao dịch</h3>
+        <p>Mã đơn hàng: {{ request.session.invoice_data.order_id }}</p>
+        <p>Email: {{ request.session.invoice_data.email }}</p>
+        <p>Địa chỉ: {{ request.session.invoice_data.address }}</p>
+        <p>Thành phố: {{ request.session.invoice_data.city }}</p>
+        <p>Tổng tiền: {{ request.session.invoice_data.total_amount|floatformat:0}} đ</p>
+        <p>Trạng thái thanh toán: {{ request.session.invoice_data.payment_status }}</p>
+        <p>Ngày giờ thanh toán: {{ request.session.invoice_data.payment_date }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock content_checkout %}

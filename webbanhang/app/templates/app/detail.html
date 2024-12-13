@@ -1,0 +1,110 @@
+{% extends 'app/base.html' %}<!--Kế thừa template base.html-->
+{% load static %} <!--Tải file tĩnh-->
+<!-- chi tiết sản phẩm -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chi tiết sản phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        /* CSS chỉnh sửa cho layout */
+        .product-container {
+            display: block; /* Sắp xếp ảnh và văn bản theo chiều dọc */
+            margin-bottom: 30px;
+        }
+
+        /* Phần hình ảnh sản phẩm */
+        .product-container .product-image {
+            width: 100%; /* Chiếm hết chiều rộng */
+            text-align: center; /* Căn giữa ảnh */
+        }
+
+        .product-container .product-image img {
+            width: 100%; /* Đảm bảo ảnh chiếm hết chiều rộng */
+            object-fit: cover;
+        }
+
+        /* Phần thông tin sản phẩm */
+        .product-container .product-details {
+            padding-top: 15px; /* Khoảng cách trên của văn bản */
+        }
+
+        .product-container .product-details h5 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Phần giá tiền */
+        .product-container .product-details .price {
+            font-size: 2rem; /* Tăng kích thước chữ */
+            color: #d9534f; /* Màu đỏ */
+            font-weight: bold;
+        }
+
+        /* Phần thêm vào giỏ hàng */
+        .product-container .product-details .cart {
+            margin-top: 20px;
+            text-align: right; /* Căn nút về phía bên phải */
+        }
+
+        .product-container .product-details .cart button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #f44336;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Responsive chỉnh sửa */
+        @media (max-width: 768px) {
+            .product-container .product-image {
+                width: 100%; /* Chiếm hết chiều rộng */
+            }
+
+            .product-container .product-details {
+                width: 100%; /* Chiếm hết chiều rộng */
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% block register %}
+    {% for product in products %}
+    <div class="container mt-5 mb-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="product-container">
+                        <!-- Phần hình ảnh sản phẩm -->
+                        <div class="product-image">
+                            <img id="main-image" src="{{ product.ImageURL }}" alt="Product Image">
+                        </div>
+                        <!-- Phần thông tin sản phẩm -->
+                        <div class="product-details">
+                            <div class="mt-4 mb-3">
+                                <h5 class="text-uppercase">{{ product.name }}</h5>
+                                <div class="price d-flex flex-row align-items-center"> 
+                                    <span class="act-price"><h5>Mức Giá:{{ product.price | floatformat:0}}đ</h5></span>
+                                </div>
+                            </div>
+                            <h5>Thông Tin Sản Phẩm :</h5>
+                            <p class="about">{{ product.detail }}</p>
+                            <div class="cart mt-4 align-items-center">
+                                <button data-product="{{ product.id }}" data-action="add" class="btn btn-danger text-uppercase mr-2 px-4 add-btn update-cart">Thêm Vào Giỏ Hàng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endblock register %}
+</body>
+</html>

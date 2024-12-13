@@ -1,0 +1,6 @@
+django-admin startapp app 
+python manage.py migrate  
+python manage.py runserver
+
+
+{% static "images/background.jpg" %}

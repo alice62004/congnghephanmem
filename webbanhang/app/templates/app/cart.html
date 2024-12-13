@@ -1,0 +1,87 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block cart_content %}
+<div class="row" style="width: 100%">
+  <div class="col-lg-12">
+    <div class="box-element">
+      <a class="btn btn-outline-dark" href="{% url 'home' %}">
+        &#x2190; Tiếp tục mua sắm
+      </a>
+      <br /><br />
+      <table class="table">
+        <tr>
+          <th>
+            <h5>
+              Số lượng sản phẩm: <strong>{{ order.get_cart_items }}</strong>
+            </h5>
+          </th>
+          <th>
+            <h5>
+                Tổng cộng: <strong class="cart-total">{{ order.cart_total_formatted }}</strong>
+              </h5>
+          </th>
+          <th>
+            <a style="float: right; margin: 5px" class="btn btn-success" href="{% url 'checkout' %}">
+              Thanh toán
+            </a>
+          </th>
+        </tr>
+      </table>
+    </div>
+
+    <br />
+    <div class="box-element">
+      <div class="cart-row">
+        <div style="flex: 2"></div>
+        <div style="flex: 1.5"><strong>Sản phẩm</strong></div>
+        <div style="flex: 1"><strong>Giá</strong></div>
+        <div style="flex: 1"><strong>Số lượng</strong></div>
+        <div style="flex: 1"><strong>Thành tiền</strong></div>
+        <div style="flex: 1"><strong>Thời gian thêm</strong></div> <!-- Cột thời gian -->
+      </div>
+
+      <!-- Dữ liệu sản phẩm mẫu -->
+      {% for item in items %}
+      <div class="cart-row">
+        <div style="flex: 2">
+          <img class="row-image" src="{{ item.product.ImageURL }}" alt="Sản phẩm" />
+        </div>
+        <div style="flex: 1.5"><p>{{ item.product.name }}</p></div>
+        <div style="flex: 2"><p>{{ item.product.price_formatted }}</p></div>
+        <div style="flex: 1">
+            <form method="POST" action="{% url 'update_cart' item.product.id %}">
+              {% csrf_token %}
+              <input 
+                type="number" 
+                name="quantity" 
+                value="{{ item.quantity }}" 
+                min="1" 
+                style="width: 50px" 
+                onchange="this.form.submit()" 
+              />
+            </form>
+          </div>
+          
+        <div style="flex: -2"><p>{{ item.total_formatted }}</p></div>
+        
+        <!-- Hiển thị thời gian thêm sản phẩm -->
+        <div style="flex: 1"><p>{{ item.added_time }}</p></div> <!-- Thời gian thêm -->
+
+        <div style="flex: 1">
+          <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-sm btn-outline-danger">
+            <i class="fa fa-trash"></i>
+          </a>
+        </div>
+      </div>
+      
+      {% empty %}
+      <p>Giỏ hàng của bạn đang trống.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Thêm Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+{% endblock cart_content %}

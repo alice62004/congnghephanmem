@@ -1,0 +1,136 @@
+{% extends 'app/base.html' %}
+<!--Kế thừa template base.html-->
+{% load static %}
+<!--Tải file tĩnh-->
+<!--Đăng Ký-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Đăng ký tài khoản</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+  </head>
+  <body>
+    {% block register %}
+    <section
+      class="vh-100 bg-image"
+      style="
+        background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrKh9Vyv9x3whuawi6HOWd_5o4BAqjqrfw6A&s ');
+      "
+    >
+      <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+          <div class="row d-flex justify-content-end align-items-center h-100">
+            <!-- Căn chỉnh form về bên phải -->
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px">
+                <a
+                  style="
+                    display: grid;
+                    place-items: center;
+                    border-radius: 15px;
+                  "
+                >
+                </a>
+                <div class="card-body p-5">
+                  <h2 class="text-uppercase text-center mb-5">
+                    Tạo tài khoản mới
+                  </h2>
+                  <img src="https://media.dau.edu.vn/Media/1_TH1057/Images/logo-dhktdn-150.png" alt="Logo" style="width: 100px; height: 100px; margin: 0 auto; margin-bottom: 20px;margin-left: 180px;">
+                  <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- Tên người dùng -->
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="username"
+                        >Tên người dùng</label
+                      >
+                      <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        class="form-control form-control-lg"
+                        value="{{ form.username.value|default:'' }}"
+                        required
+                      />
+                      {% if form.username.errors %}
+                      <ul class="text-danger mt-1">
+                        {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+
+                    <!-- Mật khẩu -->
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="password1"
+                        >Mật khẩu của bạn</label
+                      >
+                      <input
+                        type="password"
+                        name="password1"
+                        id="password1"
+                        class="form-control form-control-lg"
+                        required
+                      />
+                      {% if form.password1.errors %}
+                      <ul class="text-danger mt-1">
+                        {% for error in form.password1.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+
+                    <!-- Xác nhận mật khẩu -->
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="password2"
+                        >Xác nhận mật khẩu</label
+                      >
+                      <input
+                        type="password"
+                        name="password2"
+                        id="password2"
+                        class="form-control form-control-lg"
+                        required
+                      />
+                      {% if form.password2.errors %}
+                      <ul class="text-danger mt-1">
+                        {% for error in form.password2.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+
+                    <!-- Nút Đăng ký -->
+                    <div class="d-flex justify-content-end">
+                      <button
+                        type="submit"
+                        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+
+                    <!-- Đăng nhập -->
+                    <p class="text-center text-muted mt-5 mb-0">
+                      Đã có tài khoản?
+                      <a href="{% url 'login' %}" class="fw-bold text-body"
+                        ><u>Đăng nhập tại đây</u></a
+                      >
+                    </p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% endblock register %}
+  </body>
+</html>
